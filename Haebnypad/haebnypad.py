@@ -18,9 +18,39 @@ def main():
             self.actionOpen.triggered.connect(self.openFunction)
             self.actionSave.triggered.connect(self.saveFunction)
             self.actionSave_As.triggered.connect(self.saveAsFunction)
+            self.actionClose.triggered.connect(self.closeEvent)
 
             self.opened = False
-            self.opened_file_path = ""
+            self.opened_file_path = "Untitled"
+            self.origin = self.plainTextEdit.toPlainText()
+
+        def save_changed_data(self):
+            # 변경 사항이 없으면 바로 종료
+            if self.origin == self.plainTextEdit.toPlainText():
+                print("Close")
+                return 1
+
+            # 저장 관련 메세지 박스 생성
+            msg_box = QMessageBox()
+            msg_box.setText("Do you want to save changes to {}?".format(self.opened_file_path))
+            msg_box.addButton("Save", QMessageBox.YesRole) #0
+            msg_box.addButton("Don't save", QMessageBox.NoRole) #1
+            msg_box.addButton("Cancel", QMessageBox.RejectRole) #2
+            ret = msg_box.exec_()
+            # 저장 안함
+            if ret == 1:
+                print("Close")
+                
+            return ret
+
+        def closeEvent(self, event):
+            ret = self.save_changed_data()
+            # 취소를 누른 경우에만 종료 이벤트 무시
+            if ret == 0:
+                self.saveFunction()
+            elif ret == 2:
+                event.ignore()
+                print("Cancel")
 
         # 기능 분리 -----------------------------------------------------------------------------------------------------
         # 저장
@@ -33,6 +63,7 @@ def main():
             # 파일이 열려 있음을 기록
             self.opened = True
             self.opened_file_path = fname
+            self.origin = self.plainTextEdit.toPlainText()
 
             print("Save {}".format(fname))
 
@@ -45,6 +76,7 @@ def main():
             # 파일이 열려 있음을 기록
             self.opened = True
             self.opened_file_path = fname
+            self.origin = self.plainTextEdit.toPlainText()
 
             print("Open {}".format(fname))
 
