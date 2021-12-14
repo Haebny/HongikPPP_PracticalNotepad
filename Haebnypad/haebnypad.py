@@ -2,11 +2,48 @@ import sys
 import os
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
+from PyQt5.QtGui import QTextCursor
 
 
 def main():
     # python 실행파일 디렉토리
     base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    class findWindow(QDialog):
+        def __init__(self, parent):
+            super(findWindow, self).__init__(parent)
+            uic.loadUi(base_dir + r'\find.ui', self)
+            self.show()
+
+            self.parent = parent
+            self.pe = parent.plainTextEdit
+            self.cursor = self.pe.plainTextEdit.textCursor()
+
+
+            self.pushButton_findnext.clicked.connect(self.findNext)
+            self.pushButton_cancel.clicked.connect(self.close)
+
+        def keyReleaseEvent(self, event):
+            if self.lineEdit.text():
+                self.pushButton_findnext.setEnabled(True)
+            else:
+                self.pushButton_findnext.setEnabled(False)
+
+        def findNext(self):
+            pattern = self.lineEdit.text()
+            text =  self.pe.toPlainText()
+            print(pattern, text)
+
+            reg = QtCore.QRegExp(pattern)
+            index = reg.indexIn(text, 0)
+            if index != -1:
+                self.setCursor(index, len(pattern)+index)
+
+        def setCursor(self, start, end):
+            print(self.cursor.selectionStart(), self.cursor.selectionEnd())
+            self.cursor.setPosition(start)  # 앞에 커서를 찍고
+            self.cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, end-start)  # 뒤로 커서를 움직임
+            self.pe.setTextCursor(self.cursor)
 
     form_class = uic.loadUiType(base_dir + r'\haebnypad.ui')[0]
 
@@ -20,9 +57,33 @@ def main():
             self.actionSave_As.triggered.connect(self.saveAsFunction)
             self.actionClose.triggered.connect(self.closeEvent)
 
+            # short cuts
+            self.actionUndo.triggered.connect(self.undoFunction)
+            self.actionCut.triggered.connect(self.cutFunction)
+            self.actionCopy.triggered.connect(self.copyFunction)
+            self.actionPaste.triggered.connect(self.pasteFunction)
+            self.actionFind.triggered.connect(self.findFunction)
+
             self.opened = False
             self.opened_file_path = "Untitled"
             self.origin = self.plainTextEdit.toPlainText()
+
+        def is_changed(self):
+            if not self.opened:
+                if self.plainTextEdit.toPlainText().strip():    # 열린적은 없지만 변경사항이 있는 경우
+                    return True
+                return False
+            # 현재 데이터
+            current_data = self.plainTextEdit.toPlainText()
+
+            # 파일에 저장된 데이터
+            with open(self.opened_file_path, encoding='UTF8') as f:
+                file_data = f.read()
+
+            if current_data == file_data:   # 열린적이 있고 변경사항이 없는 경우
+                return False
+            else:   # 열린적이 있고 변경사항이 있는 경우
+                return True
 
         def save_changed_data(self):
             # 변경 사항이 없으면 바로 종료
@@ -38,19 +99,18 @@ def main():
             msg_box.addButton("Cancel", QMessageBox.RejectRole) #2
             ret = msg_box.exec_()
             # 저장 안함
-            if ret == 1:
-                print("Close")
-                
-            return ret
-
-        def closeEvent(self, event):
-            ret = self.save_changed_data()
             # 취소를 누른 경우에만 종료 이벤트 무시
             if ret == 0:
                 self.saveFunction()
-            elif ret == 2:
-                event.ignore()
-                print("Cancel")
+            else:
+                return ret
+
+        def closeEvent(self, event):
+            if self.is_changed():
+                ret = self.save_changed_data()
+                if ret == 2:
+                    event.ignore()
+                    print("Cancel")
 
         # 기능 분리 -----------------------------------------------------------------------------------------------------
         # 저장
@@ -82,6 +142,8 @@ def main():
 
         # 파일 열기
         def openFunction(self):
+            if self.is_changed():
+                ret = self.save_changed_data()
             # 파일 탐색기 호출
             fname = QFileDialog.getOpenFileName(self)
             if fname[0]:
@@ -101,6 +163,22 @@ def main():
             fname = QFileDialog.getSaveFileName(self)
             if fname[0]:
                 self.save_file(fname[0])
+
+        # 단축키 함수
+        def undoFunction(self):
+            self.plainTextEdit.undo()
+
+        def cutFunction(self):
+            self.plainTextEdit.cut()
+
+        def copyFunction(self):
+            self.plainTextEdit.copy()
+
+        def pasteFunction(self):
+            self.plainTextEdit.paste()
+
+        def findFunction(self):
+            findWindow(self)
 
 
     app = QApplication(sys.argv)
