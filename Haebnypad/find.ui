@@ -83,7 +83,7 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="checkBox_CaseSensitive">
    <property name="geometry">
     <rect>
      <x>10</x>

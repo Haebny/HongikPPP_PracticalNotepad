@@ -3,7 +3,7 @@ import os
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import QTextCursor
-
+from PyQt5 import QtCore
 
 def main():
     # python 실행파일 디렉토리
@@ -14,12 +14,11 @@ def main():
             super(findWindow, self).__init__(parent)
             uic.loadUi(base_dir + r'\find.ui', self)
             self.show()
-
+            # 커서
             self.parent = parent
+            self.cursor = parent.plainTextEdit.textCursor()
             self.pe = parent.plainTextEdit
-            self.cursor = self.pe.plainTextEdit.textCursor()
-
-
+            # 찾기
             self.pushButton_findnext.clicked.connect(self.findNext)
             self.pushButton_cancel.clicked.connect(self.close)
 
@@ -30,12 +29,20 @@ def main():
                 self.pushButton_findnext.setEnabled(False)
 
         def findNext(self):
-            pattern = self.lineEdit.text()
-            text =  self.pe.toPlainText()
-            print(pattern, text)
-
+            pattern = self.lineEdit.text()  # 찾으려는 문자열
+            text = self.pe.toPlainText()    # 문서 내 문자열
             reg = QtCore.QRegExp(pattern)
+
+            # 대소문자 구분
+            if self.checkBox_CaseSensitive.isChecked():
+                cs = QtCore.Qt.CaseSensitive
+            else:
+                cs = QtCore.Qt.CaseInsensitive
+
+            reg.setCaseSensitivity(cs)
+            # 검색
             index = reg.indexIn(text, 0)
+
             if index != -1:
                 self.setCursor(index, len(pattern)+index)
 
