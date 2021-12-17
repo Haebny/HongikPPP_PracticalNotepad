@@ -2,7 +2,7 @@ import sys
 import os
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
-from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import *
 from PyQt5 import QtCore
 
 def main():
@@ -16,8 +16,8 @@ def main():
             self.show()
             # 커서
             self.parent = parent
-            self.cursor = parent.plainTextEdit.textCursor()
-            self.pe = parent.plainTextEdit
+            self.cursor = parent.TextEdit.textCursor()
+            self.pe = parent.TextEdit
             # 찾기
             self.pushButton_findnext.clicked.connect(self.findNext)
             self.pushButton_cancel.clicked.connect(self.close)
@@ -59,6 +59,7 @@ def main():
             super().__init__()
             self.setupUi(self)
 
+            # save/load functions
             self.actionOpen.triggered.connect(self.openFunction)
             self.actionSave.triggered.connect(self.saveFunction)
             self.actionSave_As.triggered.connect(self.saveAsFunction)
@@ -70,18 +71,22 @@ def main():
             self.actionCopy.triggered.connect(self.copyFunction)
             self.actionPaste.triggered.connect(self.pasteFunction)
             self.actionFind.triggered.connect(self.findFunction)
+            self.actionAttach_Image.triggered.connect(self.attachImageFunction)
 
             self.opened = False
             self.opened_file_path = "Untitled"
-            self.origin = self.plainTextEdit.toPlainText()
+            self.origin = self.textEdit.toPlainText()
+            self.label_1 = QLabel(self)
+            self.label_1.move(1, 20)
+            self.label_1.resize(700, 700)
 
         def is_changed(self):
             if not self.opened:
-                if self.plainTextEdit.toPlainText().strip():    # 열린적은 없지만 변경사항이 있는 경우
+                if self.textEdit.toPlainText().strip():    # 열린적은 없지만 변경사항이 있는 경우
                     return True
                 return False
             # 현재 데이터
-            current_data = self.plainTextEdit.toPlainText()
+            current_data = self.textEdit.toPlainText()
 
             # 파일에 저장된 데이터
             with open(self.opened_file_path, encoding='UTF8') as f:
@@ -94,7 +99,7 @@ def main():
 
         def save_changed_data(self):
             # 변경 사항이 없으면 바로 종료
-            if self.origin == self.plainTextEdit.toPlainText():
+            if self.origin == self.textEdit.toPlainText():
                 print("Close")
                 return 1
 
@@ -122,7 +127,7 @@ def main():
         # 기능 분리 -----------------------------------------------------------------------------------------------------
         # 저장
         def save_file(self, fname):
-            data = self.plainTextEdit.toPlainText()
+            data = self.textEdit.toPlainText()
 
             with open(fname, 'w', encoding="UTF8") as f:
                 f.write(data)
@@ -130,7 +135,7 @@ def main():
             # 파일이 열려 있음을 기록
             self.opened = True
             self.opened_file_path = fname
-            self.origin = self.plainTextEdit.toPlainText()
+            self.origin = self.textEdit.toPlainText()
 
             print("Save {}".format(fname))
 
@@ -138,12 +143,12 @@ def main():
         def open_file(self, fname):
             with open(fname, encoding="UTF8") as f:
                 data = f.read()
-            self.plainTextEdit.setPlainText(data)
+            self.textEdit.setPlainText(data)
 
             # 파일이 열려 있음을 기록
             self.opened = True
             self.opened_file_path = fname
-            self.origin = self.plainTextEdit.toPlainText()
+            self.origin = self.textEdit.toPlainText()
 
             print("Open {}".format(fname))
 
@@ -173,20 +178,42 @@ def main():
 
         # 단축키 함수
         def undoFunction(self):
-            self.plainTextEdit.undo()
+            self.textEdit.undo()
 
         def cutFunction(self):
-            self.plainTextEdit.cut()
+            self.textEdit.cut()
 
         def copyFunction(self):
-            self.plainTextEdit.copy()
+            self.textEdit.copy()
 
         def pasteFunction(self):
-            self.plainTextEdit.paste()
+            self.textEdit.paste()
 
         def findFunction(self):
             findWindow(self)
 
+        # 사진 첨부하기
+        def attachImageFunction(self):
+            text_cursor = self.textEdit.textCursor()
+            cursor = QTextCursor(text_cursor)
+            y = cursor.blockNumber() + 20
+            x = cursor.columnNumber() + 1
+
+            # 파일 탐색기 호출
+            fname = QFileDialog.getOpenFileName(self)
+            # 이미지 파일을 선택했다면
+            if fname[0]:
+                # 이미지 클래스 생성 및 이미지 불러오기
+                pixmap = QPixmap(fname[0])
+
+                # 이미지를 붙일 라벨 생성
+                print(pixmap.width(), pixmap.height())
+                self.label_1.resize(pixmap.width(), pixmap.height())
+                self.label_1.move(x, y)
+
+                # 이미지와 라벨 연결
+                self.label_1.setPixmap(pixmap)
+                self.show()
 
     app = QApplication(sys.argv)
     main_window = WindowClass()

@@ -30,11 +30,7 @@
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="plainTextEdit">
-        <property name="plainText">
-         <string/>
-        </property>
-       </widget>
+       <widget class="QTextEdit" name="textEdit"/>
       </item>
      </layout>
     </item>
@@ -76,6 +72,8 @@
     <addaction name="separator"/>
     <addaction name="actionSelect_All"/>
     <addaction name="actionDate_Time"/>
+    <addaction name="separator"/>
+    <addaction name="actionAttach_Image"/>
    </widget>
    <widget class="QMenu" name="menuFomat">
     <property name="title">
@@ -206,6 +204,14 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionAttach_Image">
+   <property name="text">
+    <string>Attach Image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
  </widget>
