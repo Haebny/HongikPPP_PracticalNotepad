@@ -76,9 +76,34 @@ def main():
             self.opened = False
             self.opened_file_path = "Untitled"
             self.origin = self.textEdit.toPlainText()
-            self.label_1 = QLabel(self)
-            self.label_1.move(1, 20)
-            self.label_1.resize(700, 700)
+
+            # 사진 첨부를 위한 세팅
+            self.mainLayout = QGridLayout()
+
+            self.textEditor = QTextEdit()
+            self.setLayout(self.mainLayout)
+            self.mainLayout.addWidget(self.textEditor)
+
+            document = self.textEditor.document()
+            cursor = QTextCursor(document)
+
+            p1 = cursor.position()  # returns int
+            cursor.insertImage('C:\\Users\\Haebeen\\Desktop\\myLittleBro.jpg')
+
+            self.setLayout(self.mainLayout)
+
+            # 창 크기
+            self.resize(1200, 800)
+
+            # self.mainLayout = QVBoxLayout()
+            # self.textEditor = QTextEdit()
+            # self.mainLayout.addWidget(self.textEditor)
+            #
+            # document = self.textEditor.document()
+            # cursor = QTextCursor(document)
+            #
+            # cursor.insertImage("C:\\Users\\Haebeen\\Desktop\\myLittleBro.jpg")
+            # self.setLayout(self.mainLayout)
 
         def is_changed(self):
             if not self.opened:
@@ -194,26 +219,23 @@ def main():
 
         # 사진 첨부하기
         def attachImageFunction(self):
+            # 커서 위치 확인
             text_cursor = self.textEdit.textCursor()
             cursor = QTextCursor(text_cursor)
-            y = cursor.blockNumber() + 20
-            x = cursor.columnNumber() + 1
 
-            # 파일 탐색기 호출
-            fname = QFileDialog.getOpenFileName(self)
-            # 이미지 파일을 선택했다면
-            if fname[0]:
-                # 이미지 클래스 생성 및 이미지 불러오기
-                pixmap = QPixmap(fname[0])
+            pos = cursor.position()
 
-                # 이미지를 붙일 라벨 생성
-                print(pixmap.width(), pixmap.height())
-                self.label_1.resize(pixmap.width(), pixmap.height())
-                self.label_1.move(x, y)
+            # 첨부할 이미지 선택
+            filePath = QFileDialog.getOpenFileName(
+                self,
+                "Select an image",
+                "",
+                "Image Files(*.png *.gif *.jpg *jpeg *.bmp)"
+            )
 
-                # 이미지와 라벨 연결
-                self.label_1.setPixmap(pixmap)
-                self.show()
+            if filePath:
+                cursor.insertImage(filePath[0])
+                self.setLayout(self.mainLayout)
 
     app = QApplication(sys.argv)
     main_window = WindowClass()

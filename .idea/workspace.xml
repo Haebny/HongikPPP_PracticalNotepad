@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b980158b-7a3c-4a24-86be-b57b8eb5788a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Haebnypad/haebnypad.py" beforeDir="false" afterPath="$PROJECT_DIR$/Haebnypad/haebnypad.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Haebnypad/haebnypad.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Haebnypad/haebnypad.ui" afterDir="false" />
-    </list>
+    <list default="true" id="b980158b-7a3c-4a24-86be-b57b8eb5788a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,7 +61,7 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -79,30 +75,22 @@
     </task>
     <servers />
   </component>
-  <component name="WindowStateProjectService">
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom" timestamp="1639766240931">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1116" height="346" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1639761857128" />
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639766240931" />
-    <state width="1899" height="281" key="GridCell.Tab.0.center" timestamp="1639766240931">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1116" height="346" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1639761857128" />
-    <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639766240931" />
-    <state width="1899" height="281" key="GridCell.Tab.0.left" timestamp="1639766240931">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1116" height="346" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1639761857128" />
-    <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639766240931" />
-    <state width="1899" height="281" key="GridCell.Tab.0.right" timestamp="1639766240931">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1116" height="346" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1639761857128" />
-    <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1639766240931" />
-    <state x="461" y="162" key="SettingsEditor" timestamp="1639405981661">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="461" y="162" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1639405981661" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Haebnypad/haebnypad.py</url>
+          <line>225</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
